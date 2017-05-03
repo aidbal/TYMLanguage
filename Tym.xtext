@@ -1,0 +1,105 @@
+grammar org.xtext.Tym with org.eclipse.xtext.common.Terminals
+
+generate tym "http://www.xtext.org/Tym"
+
+Model:
+ elements += AbstractElement*
+;
+  
+AbstractElement:
+ Statement
+;
+
+// Expressions
+
+Statement:
+ Expression
+;
+
+Expression:
+ (AssignmentExpression | PrintExpression | CreationExpression | PrintStatement)
+;
+
+PrintExpression:
+ "print" what=Value
+;
+
+PrintStatement:
+	'print' what=Value '>>' file=VAR_NAME'.'extension=VAR_NAME
+;
+
+
+Type:
+ PrimitiveType
+;
+
+Variable:
+ name=QualifiedName
+;
+
+ExprBody:
+ expr+=(FactorExpr)+
+;
+
+FactorExpr:
+ l=Primary a+=Arithmetics*
+;
+
+Arithmetics:
+ m=("*" | "/" | "+" | "-") r=Primary
+;
+
+Primary:
+ UnaryExpression | '(' FactorExpr ')' 
+;
+
+UnaryExpression:
+ (up=UnaryPrefix)? val=Value (us=UnarySuffix)?
+;
+
+Value:
+ var=[Variable|QualifiedName] | val=PrimitiveValue
+;
+
+CreationExpression:
+ type=PrimitiveType name=Variable ("=" val=ExprBody)?
+;
+
+AssignmentExpression:
+ name=[Variable|QualifiedName] "=" val=ExprBody
+;
+
+
+// misc
+PrimitiveType:
+ 'int' | 'string'
+;
+
+PrimitiveValue:
+ INT | STRING
+;
+
+QualifiedName:
+ VAR_NAME
+;
+
+UnaryPrefix:
+ "~"
+;
+
+UnarySuffix:
+ "++" | "--"
+;
+
+
+Literal:
+ {IntegerLiteral} value=INT |
+ {StringLiteral} value=STRING
+;
+
+
+
+//========= terminals
+terminal VAR_NAME:
+ ('a'..'z') ('a'..'z'|'A'..'Z'|'_'|'0'..'9')*
+;
