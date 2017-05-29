@@ -1,0 +1,9 @@
+grammar org.pkt.Tym with org.eclipse.xtext.common.Terminals
+
+generate tym "http://www.pkt.org/Tym"
+
+Model:
+	greetings+=Greeting*;
+	
+Greeting:
+	'Hello' name=ID '!';
