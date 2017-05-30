@@ -31,7 +31,7 @@ Workflow {
 		}
 		language = StandardLanguage {
 			name = "org.pkt.Tym"
-			fileExtensions = "Tym"
+			fileExtensions = "tym"
 
 			serializer = {
 				generateStub = false

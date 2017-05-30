@@ -7,5 +7,9 @@ Bundle-SymbolicName: org.pkt.Tym.ide; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.pkt.Tym,
  org.eclipse.xtext.ide,
- org.eclipse.xtext.xbase.ide
+ org.eclipse.xtext.xbase.ide,
+ org.antlr.runtime
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: org.pkt.ide.contentassist.antlr,
+ org.pkt.ide.contentassist.antlr.internal
+

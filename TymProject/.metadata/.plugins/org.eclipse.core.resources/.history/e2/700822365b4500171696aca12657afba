@@ -1,0 +1,105 @@
+grammar org.pkt.Tym with org.eclipse.xtext.common.Terminals
+
+generate tym "http://www.pkt.org/Tym"
+
+Model:
+// elements += (AbstractElement | Function)*
+ elements += AbstractElement*
+;
+  
+AbstractElement:
+ Variable | PrintStatement | TestStatement | LoopStatement | Return | FunctionCall
+;
+
+Variable:
+ ((vartype=VariableType name=ID) | variable=[Variable]) '=' expression=(Expression | FunctionCall)
+;
+
+VariableType:
+	('number' | 'line' | 'Bool')
+;
+
+Function:
+	'func' (return=VariableType)? name=ID ':' (params+=Variable (',' params+=Variable)*)? body=FunctionBlock 
+;
+
+PrintStatement:
+ "print" expression=(Expression | FunctionCall)
+;
+
+TestStatement:
+	'test'  expression=(Expression | FunctionCall)  thenBlock=Block
+ 	(=>'or' elseBlock=Block)?
+;
+
+Block:
+	'loop' elements += AbstractElement+ 'end' 
+;
+
+Return:
+	're' expression=(Expression | FunctionCall)
+;
+
+LoopStatement:
+	'loop'  expression=(Expression | FunctionCall)  body=Block
+;
+
+// Expressions
+
+FunctionBlock:
+	elements += (AbstractElement)+ 'end'
+;
+
+
+
+FunctionCall:
+	'func' funcname=[Function]':' (params+=Expression (',' params+=Expression)*)?
+;
+
+Expression: Or;
+
+Or returns Expression:
+	And (
+		{Or.left=current} "||" right=And
+	)*;
+
+And returns Expression:
+	Equality (
+		{And.left=current} "&&" right=Equality
+	)*;
+
+Equality returns Expression:
+	Comparison (
+		{Equality.left=current} op=("==" | "!=")
+		right=Comparison
+	)*;
+
+Comparison returns Expression:
+	PlusOrMinus (
+		{Comparison.left=current} op=(">=" | "<=" | ">" | "<")
+		right=PlusOrMinus
+	)*;
+
+PlusOrMinus returns Expression:
+	MulOrDiv (
+		({Plus.left=current} '+' | {Minus.left=current} '-')
+		right=MulOrDiv
+	)*;
+
+MulOrDiv returns Expression:
+	Primary (
+		({MulOrDiv.left=current} op=('*' | '/'))
+		right=Primary
+	)*;
+
+Primary returns Expression:
+	'(' Expression ')' |
+	{Not} "!" expression=Primary |
+	Atomic;
+
+Atomic returns Expression:
+	{IntConstant} value=INT |
+	{StringConstant} value=STRING |
+	{BoolConstant} value=('true' | 'false') |
+	{VariableRef} variable=[Variable];
+
