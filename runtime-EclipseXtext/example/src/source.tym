@@ -1,18 +1,22 @@
-func main
-number a = 2
-
-word line
-test a < b
-	print b “ daugiau uş ” a
-else
-	print a “ daugiau uş ” b
-end
-line = “Hello world”
-print work: num
-end
-func work: number num
-	loop i = 0 to 10
-		num = num + i
+func main()
+	number a = 2
+	number b = 0
+	word line = "zodis"
+	test a < b
+		print  b + " daugiau"
 	end
-	re num
+	or
+		print a + " daugiau"
+	end
+	line = "line"
+	number num = 1
+	print work(num)
+end
+
+func work()
+	number num = 1
+	loop(3)
+		num = num + 1
+	end
+	re num	
 end

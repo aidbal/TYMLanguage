@@ -1,0 +1,5 @@
+package org.xtext.kalbuteoria.projektas.typing
+
+interface MMKType {
+	override String toString()
+}

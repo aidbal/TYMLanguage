@@ -1,0 +1,111 @@
+package org.pkt.typing
+
+import com.google.inject.Inject
+import org.eclipse.xtext.util.IResourceScopeCache
+import org.xtext.kalbuteoria.projektas.mMK.Expression
+import org.xtext.kalbuteoria.projektas.mMK.StringConstant
+import org.xtext.kalbuteoria.projektas.mMK.IntConstant
+import org.xtext.kalbuteoria.projektas.mMK.BoolConstant
+import org.xtext.kalbuteoria.projektas.mMK.Not
+import org.xtext.kalbuteoria.projektas.mMK.MulOrDiv
+import org.xtext.kalbuteoria.projektas.mMK.Minus
+import org.xtext.kalbuteoria.projektas.mMK.Comparison 
+import org.xtext.kalbuteoria.projektas.mMK.Equality
+import org.xtext.kalbuteoria.projektas.mMK.And
+import org.xtext.kalbuteoria.projektas.mMK.Or
+import org.xtext.kalbuteoria.projektas.mMK.Plus
+import org.xtext.kalbuteoria.projektas.mMK.VariableRef
+import org.xtext.kalbuteoria.projektas.mMK.FunctionCall
+import org.xtext.kalbuteoria.projektas.MMKModelUtil
+
+class TymTypeComputer {
+	public static val STRING_TYPE = new StringType
+	public static val INT_TYPE = new IntType
+	public static val BOOL_TYPE = new BoolType
+	public static val REF_TYPE = new RefType
+
+	@Inject extension MMKModelUtil
+
+	@Inject IResourceScopeCache cache
+
+	def isStringType(MMKType type) {
+		type === STRING_TYPE
+	}
+
+	def isIntType(MMKType type) {
+		type === INT_TYPE
+	}
+
+	def isBoolType(MMKType type) {
+		type === BOOL_TYPE
+	}
+
+	def dispatch MMKType typeFor(Expression e) {
+		switch (e) {
+			StringConstant: STRING_TYPE
+			IntConstant: INT_TYPE
+			BoolConstant: BOOL_TYPE
+			Not: BOOL_TYPE
+			MulOrDiv: INT_TYPE
+			Minus: INT_TYPE
+			Comparison: BOOL_TYPE
+			Equality: BOOL_TYPE
+			And: BOOL_TYPE
+			Or: BOOL_TYPE
+		} 
+	}
+	
+	def dispatch MMKType typeForFunctionCall(FunctionCall e) {
+		switch (e.funcname.getReturn()) {
+			case "num": INT_TYPE
+			case "Bool": BOOL_TYPE
+			case "line": STRING_TYPE
+		} 
+	}	
+	
+	def dispatch MMKType typeForEcho(Expression e) {
+		switch (e) {
+			StringConstant: STRING_TYPE
+			IntConstant: INT_TYPE
+			BoolConstant: BOOL_TYPE
+			Not: BOOL_TYPE
+			MulOrDiv: INT_TYPE
+			Minus: INT_TYPE
+			Comparison: BOOL_TYPE
+			Equality: BOOL_TYPE
+			And: BOOL_TYPE
+			Or: BOOL_TYPE
+			VariableRef: REF_TYPE
+		}
+	}	
+
+	def dispatch MMKType typeFor(Plus e) {
+		val leftType = e.left.typeFor
+		val rightType = e.right?.typeFor
+		if (leftType.isStringType || rightType.isStringType)
+			STRING_TYPE
+		else
+			INT_TYPE
+	}
+
+	def dispatch MMKType typeFor(VariableRef varRef) {
+		val variable = varRef.variable
+
+		if(variable.expression instanceof Expression) {
+		    val varExp = variable.expression as Expression;
+		    return cache.get("type" -> variable, variable.eResource) [
+				varExp.typeFor
+			]
+		}else{
+			val varExp = variable.expression as FunctionCall;
+		    return cache.get("type" -> variable, variable.eResource) [
+				varExp.typeForFunctionCall
+			]
+		}
+		
+		// use a pair as the key, not to conflict with the
+		// use of cache we make in ExpressionsModelUtil
+
+		 
+	}
+}

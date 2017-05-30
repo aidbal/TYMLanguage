@@ -60,8 +60,8 @@ public class TymParser extends AbstractContentAssistParser {
 					put(grammarAccess.getLoopStatementAccess().getGroup(), "rule__LoopStatement__Group__0");
 					put(grammarAccess.getReturnAccess().getGroup(), "rule__Return__Group__0");
 					put(grammarAccess.getFunctionCallAccess().getGroup(), "rule__FunctionCall__Group__0");
-					put(grammarAccess.getFunctionCallAccess().getGroup_3(), "rule__FunctionCall__Group_3__0");
-					put(grammarAccess.getFunctionCallAccess().getGroup_3_1(), "rule__FunctionCall__Group_3_1__0");
+					put(grammarAccess.getFunctionCallAccess().getGroup_2(), "rule__FunctionCall__Group_2__0");
+					put(grammarAccess.getFunctionCallAccess().getGroup_2_1(), "rule__FunctionCall__Group_2_1__0");
 					put(grammarAccess.getOrAccess().getGroup(), "rule__Or__Group__0");
 					put(grammarAccess.getOrAccess().getGroup_1(), "rule__Or__Group_1__0");
 					put(grammarAccess.getAndAccess().getGroup(), "rule__And__Group__0");
@@ -102,9 +102,9 @@ public class TymParser extends AbstractContentAssistParser {
 					put(grammarAccess.getLoopStatementAccess().getExpressionAssignment_1(), "rule__LoopStatement__ExpressionAssignment_1");
 					put(grammarAccess.getLoopStatementAccess().getBodyAssignment_2(), "rule__LoopStatement__BodyAssignment_2");
 					put(grammarAccess.getReturnAccess().getExpressionAssignment_1(), "rule__Return__ExpressionAssignment_1");
-					put(grammarAccess.getFunctionCallAccess().getFuncnameAssignment_1(), "rule__FunctionCall__FuncnameAssignment_1");
-					put(grammarAccess.getFunctionCallAccess().getParamsAssignment_3_0(), "rule__FunctionCall__ParamsAssignment_3_0");
-					put(grammarAccess.getFunctionCallAccess().getParamsAssignment_3_1_1(), "rule__FunctionCall__ParamsAssignment_3_1_1");
+					put(grammarAccess.getFunctionCallAccess().getFuncnameAssignment_0(), "rule__FunctionCall__FuncnameAssignment_0");
+					put(grammarAccess.getFunctionCallAccess().getParamsAssignment_2_0(), "rule__FunctionCall__ParamsAssignment_2_0");
+					put(grammarAccess.getFunctionCallAccess().getParamsAssignment_2_1_1(), "rule__FunctionCall__ParamsAssignment_2_1_1");
 					put(grammarAccess.getOrAccess().getRightAssignment_1_2(), "rule__Or__RightAssignment_1_2");
 					put(grammarAccess.getAndAccess().getRightAssignment_1_2(), "rule__And__RightAssignment_1_2");
 					put(grammarAccess.getEqualityAccess().getOpAssignment_1_1(), "rule__Equality__OpAssignment_1_1");

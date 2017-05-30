@@ -1,0 +1,162 @@
+package org.pkt.generator
+
+import com.google.inject.Inject
+import org.eclipse.emf.ecore.resource.Resource
+import org.eclipse.xtext.generator.AbstractGenerator
+import org.eclipse.xtext.generator.IFileSystemAccess2
+import org.eclipse.xtext.generator.IGeneratorContext
+import org.pkt.tym.AbstractElement
+import org.pkt.tym.Block
+import org.pkt.tym.PrintStatement
+import org.pkt.tym.Expression
+import org.pkt.tym.LoopStatement
+import org.pkt.tym.Function
+import org.pkt.tym.FunctionBlock
+import org.pkt.tym.FunctionCall
+import org.pkt.tym.TestStatement
+import org.pkt.tym.Return
+import org.pkt.tym.Variable
+
+import static extension org.eclipse.xtext.nodemodel.util.NodeModelUtils.*
+import org.xtext.kalbuteoria.projektas.typing.MMKType
+import org.xtext.kalbuteoria.projektas.typing.MMKTypeComputer
+import org.xtext.kalbuteorija.projektas.interpreter.MMKInterpreter
+
+class TymGenerator extends AbstractGenerator {
+
+	@Inject extension TymTypeComputer
+	@Inject extension TymInterpreter
+
+	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
+		fsa.generateFile
+			('''tym.java''',
+				'''
+			public class MMK {
+				
+				«FOR s: resource.allContents.toIterable.filter(typeof(Function))»
+					«interpretFunction(s)»
+				«ENDFOR»
+				
+				public static void main(String[] args) {
+					«FOR s: resource.allContents.toIterable.filter(typeof(AbstractElement))»
+						«IF (!(s.eContainer() instanceof Block) && !(s.eContainer() instanceof WhileStatement) && !(s.eContainer() instanceof FunctionBlock) && !(s.eContainer() instanceof Function))»
+							«interpretStatement(s)»
+						«ENDIF»
+					«ENDFOR»
+				}
+			}
+		''')
+	}
+	
+	def interpretFunction(Function f) {
+		val paramsCount = f.getParams().size();
+		var paramI = 0;
+		
+		'''public static «IF (f.getReturn() == null)»void«ENDIF»«IF (f.getReturn() == "num")»int«ENDIF»«IF (f.getReturn() == "line")»String«ENDIF»«IF (f.getReturn() == "Bool")»Boolen«ENDIF» «f.getName()»(«IF (f.params.map[getVartype()].join(', ') == "num")»int«ENDIF»«IF (f.params.map[getVartype()].join(', ') == "Bool")»boolean«ENDIF»«IF (f.params.map[getVartype()].join(', ') == "line")»String«ENDIF»«  " " + f.params.map[ getName()].join(', ')») {
+«FOR s: f.getBody().elements.filter(typeof(AbstractElement))»    
+        «interpretStatement(s)»
+«ENDFOR»
+}
+		'''
+	} 
+	
+	def String getType(Function f)
+	{
+		//val a = f.params.map[getVartype()].toString()
+		val a = f.params.map[getVartype()].join(', ')
+		
+		
+		/*if(a == "num")
+		{
+			val ats = "int"
+			return ats +" "+ f.params.map[ getName()].join(', ').toString()
+		}
+		else if (a == "line")
+		{
+			val ats = "String"
+			return ats +" "+ f.params.map[ getName()].join(', ')
+		}
+		else if (a == "Bool")
+		{
+			val ats = "Boolean"
+			return ats +" "+ f.params.map[getName()].join(', ')
+		}*/
+		return a
+		
+		
+	}
+	
+	def interpretStatement(AbstractElement s) {
+		switch (s) {
+			Variable:
+				if(s.expression instanceof Expression) {
+					switch(s.vartype) { 
+						case "num":
+							"int " + s.name + " = " + s.expression.getNode().getText() + ";"
+						case "line":
+							"String " + s.name + " = " + s.expression.getNode().getText() + ";"
+						case "Bool":
+							"boolean " + s.name + " = " + s.expression.getNode().getText() + ";"
+						default:
+							s.variable.name + " = " + s.expression.getNode().getText() + ";"
+							 
+					} 
+				}else{
+					val func = s.expression as FunctionCall;
+					switch(s.vartype) { 
+						case "num":
+							'''int «s.name» = MMK.«func.funcname.getName()»(«func.params.map[getNode().getText()].join(', ')»);'''
+						case "line":
+							'''String «s.name» = MMK.«func.funcname.getName()»(«func.params.map[getNode().getText()].join(', ')»);'''
+						case "Bool":
+							'''boolean «s.name» = MMK.«func.funcname.getName()»(«func.params.map[getNode().getText()].join(', ')»);'''
+						default:
+							'''«s.variable.name» = MMK.«func.funcname.getName()»(«func.params.map[getNode().getText()].join(', ')»);'''
+					} 					
+				}
+			PrintStatement: {
+				if(s.expression instanceof Expression) {
+					"System.out.println("+ s.expression.getNode().getText() +");"	
+				}else{
+					val func = s.expression as FunctionCall;
+					'''System.out.println(MMK.«func.funcname.getName()»(«func.params.map[getNode().getText()].join(', ')»));'''
+				}
+			}
+			Return:
+				"return " + s.expression.getNode().getText() + ";"
+			FunctionCall:
+				if(!(s.eContainer() instanceof PrintStatement) && !(s.eContainer() instanceof Variable)) { 
+					'''MMK.«s.funcname.getName()»(«s.params.map[getNode().getText()].join(', ')»);'''
+				}
+			CheckStatement:
+				'''if(«s.expression.getNode().getText()»){
+			«FOR AbstractElement s1 : s.thenBlock.elements»
+				«interpretStatement(s1)»
+			«ENDFOR»
+			}«IF (s.elseBlock != null)»else{
+				«FOR AbstractElement s2 : s.elseBlock.elements»
+					«interpretStatement(s2)»
+				«ENDFOR»
+			}«ENDIF»'''
+			WhileStatement:
+				'''while(«s.expression.getNode().getText()»){
+			«FOR AbstractElement s1 : s.body.elements»
+				«interpretStatement(s1)»
+			«ENDFOR»
+			}'''				
+		}
+	}
+	
+	def private checkExpectedType(Expression exp, MMKType expectedType) {
+		val actualType = getType(exp)
+		if (actualType != expectedType)
+			return false;
+		return true;
+	}
+
+	def private MMKType getType(Expression exp) {
+		val type = exp?.typeFor
+		return type;
+	}
+
+}

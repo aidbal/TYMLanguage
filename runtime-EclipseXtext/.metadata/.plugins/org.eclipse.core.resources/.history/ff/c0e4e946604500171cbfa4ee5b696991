@@ -1,0 +1,18 @@
+func main()
+	number a = 2
+	number b = 0
+	word line
+	test(a < b)
+		print a
+	or
+		print a “ daugiau uş ” b
+	end
+	line = “Hello world”
+	print work: num
+	end
+	func work(number num)
+		loop(3)
+			num = num + 1
+		end
+		re num
+end

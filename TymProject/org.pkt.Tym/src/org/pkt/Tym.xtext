@@ -15,11 +15,11 @@ Variable:
 ;
 
 Function:
-	'<F' (return=VariableType)? name=ID '(' (params+=Variable (',' params+=Variable)*)? ')' body=FunctionBlock 
+	'func' (return=VariableType)? name=ID '(' (params+=Variable (',' params+=Variable)*)? ')' body=FunctionBlock 
 ;
 
 VariableType:
-	('num' | 'word' | 'Bool')
+	('number' | 'word' | 'Bool')
 ;
 
 PrintStatement:
@@ -47,7 +47,7 @@ Return:
 ;
 
 FunctionCall:
-	'func' funcname=[Function]'(' (params+=Expression (',' params+=Expression)*)?')'
+	funcname=[Function]'(' (params+=Expression (',' params+=Expression)*)?')'
 ;
 
 Expression: Or;

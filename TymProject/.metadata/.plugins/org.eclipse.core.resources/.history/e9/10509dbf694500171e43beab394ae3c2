@@ -1,0 +1,5 @@
+package org.pkt.typing
+
+class StringType implements MMKType {
+	override toString() { "string" }
+}

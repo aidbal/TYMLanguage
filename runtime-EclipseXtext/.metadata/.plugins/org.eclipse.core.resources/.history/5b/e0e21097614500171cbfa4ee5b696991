@@ -1,0 +1,21 @@
+func main()
+	number a = 2
+	number b = 0
+	word line
+	test(a < b)
+		print "a"
+	end
+	or
+		print "daugiau uş"
+	end
+	line = "line"
+	number num = 1
+	print work(num)
+end
+
+func work(number num = 2)
+	loop(3)
+		num = num + 1
+	end
+	re num	
+end

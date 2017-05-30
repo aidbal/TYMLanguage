@@ -1,0 +1,24 @@
+package org.xtext.kalbuteoria.projektas
+
+import org.xtext.kalbuteoria.projektas.mMK.VariableRef
+import org.xtext.kalbuteoria.projektas.mMK.Expression
+import org.xtext.kalbuteoria.projektas.mMK.AbstractElement
+import static extension org.eclipse.xtext.EcoreUtil2.*
+import org.xtext.kalbuteoria.projektas.mMK.Model
+import org.xtext.kalbuteoria.projektas.mMK.Variable
+
+class MMKModelUtil {
+/* 	
+	def isVariableDefinedBefore(VariableRef varRef) {
+		varRef.variablesDefinedBefore.contains(varRef.variable)
+	}
+	
+	def variablesDefinedBefore(Expression e) {
+		e.getContainerOfType(Statement).variablesDefinedBefore
+	}
+	
+	def variablesDefinedBefore(Statement containingElement) {
+		val allElements = containingElement.getContainerOfType(SimpleTaskModel).elements
+		allElements.subList(0, allElements.indexOf(containingElement)).typeSelect(Variable).toSet
+	}*/
+}

@@ -1,0 +1,4 @@
+package org.pkt.typing
+interface MMKType {
+	override String toString()
+}

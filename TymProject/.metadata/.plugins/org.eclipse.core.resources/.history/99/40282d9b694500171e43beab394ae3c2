@@ -1,0 +1,5 @@
+package org.xtext.kalbuteoria.projektas.typing
+
+class BoolType implements MMKType {
+	override toString() { "boolean" }
+} 

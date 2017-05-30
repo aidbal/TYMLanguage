@@ -152,7 +152,7 @@ public class TymGrammarAccess extends AbstractGrammarElementFinder {
 	public class FunctionElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.pkt.Tym.Function");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Keyword cFKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Keyword cFuncKeyword_0 = (Keyword)cGroup.eContents().get(0);
 		private final Assignment cReturnAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cReturnVariableTypeParserRuleCall_1_0 = (RuleCall)cReturnAssignment_1.eContents().get(0);
 		private final Assignment cNameAssignment_2 = (Assignment)cGroup.eContents().get(2);
@@ -170,14 +170,14 @@ public class TymGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cBodyFunctionBlockParserRuleCall_6_0 = (RuleCall)cBodyAssignment_6.eContents().get(0);
 		
 		//Function:
-		//	'<F' return=VariableType? name=ID '(' (params+=Variable (',' params+=Variable)*)? ')' body=FunctionBlock;
+		//	'func' return=VariableType? name=ID '(' (params+=Variable (',' params+=Variable)*)? ')' body=FunctionBlock;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'<F' return=VariableType? name=ID '(' (params+=Variable (',' params+=Variable)*)? ')' body=FunctionBlock
+		//'func' return=VariableType? name=ID '(' (params+=Variable (',' params+=Variable)*)? ')' body=FunctionBlock
 		public Group getGroup() { return cGroup; }
 		
-		//'<F'
-		public Keyword getFKeyword_0() { return cFKeyword_0; }
+		//'func'
+		public Keyword getFuncKeyword_0() { return cFuncKeyword_0; }
 		
 		//return=VariableType?
 		public Assignment getReturnAssignment_1() { return cReturnAssignment_1; }
@@ -227,19 +227,19 @@ public class TymGrammarAccess extends AbstractGrammarElementFinder {
 	public class VariableTypeElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.pkt.Tym.VariableType");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
-		private final Keyword cNumKeyword_0 = (Keyword)cAlternatives.eContents().get(0);
+		private final Keyword cNumberKeyword_0 = (Keyword)cAlternatives.eContents().get(0);
 		private final Keyword cWordKeyword_1 = (Keyword)cAlternatives.eContents().get(1);
 		private final Keyword cBoolKeyword_2 = (Keyword)cAlternatives.eContents().get(2);
 		
 		//VariableType:
-		//	'num' | 'word' | 'Bool';
+		//	'number' | 'word' | 'Bool';
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'num' | 'word' | 'Bool'
+		//'number' | 'word' | 'Bool'
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
-		//'num'
-		public Keyword getNumKeyword_0() { return cNumKeyword_0; }
+		//'number'
+		public Keyword getNumberKeyword_0() { return cNumberKeyword_0; }
 		
 		//'word'
 		public Keyword getWordKeyword_1() { return cWordKeyword_1; }
@@ -452,65 +452,61 @@ public class TymGrammarAccess extends AbstractGrammarElementFinder {
 	public class FunctionCallElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.pkt.Tym.FunctionCall");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Keyword cFuncKeyword_0 = (Keyword)cGroup.eContents().get(0);
-		private final Assignment cFuncnameAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final CrossReference cFuncnameFunctionCrossReference_1_0 = (CrossReference)cFuncnameAssignment_1.eContents().get(0);
-		private final RuleCall cFuncnameFunctionIDTerminalRuleCall_1_0_1 = (RuleCall)cFuncnameFunctionCrossReference_1_0.eContents().get(1);
-		private final Keyword cLeftParenthesisKeyword_2 = (Keyword)cGroup.eContents().get(2);
-		private final Group cGroup_3 = (Group)cGroup.eContents().get(3);
-		private final Assignment cParamsAssignment_3_0 = (Assignment)cGroup_3.eContents().get(0);
-		private final RuleCall cParamsExpressionParserRuleCall_3_0_0 = (RuleCall)cParamsAssignment_3_0.eContents().get(0);
-		private final Group cGroup_3_1 = (Group)cGroup_3.eContents().get(1);
-		private final Keyword cCommaKeyword_3_1_0 = (Keyword)cGroup_3_1.eContents().get(0);
-		private final Assignment cParamsAssignment_3_1_1 = (Assignment)cGroup_3_1.eContents().get(1);
-		private final RuleCall cParamsExpressionParserRuleCall_3_1_1_0 = (RuleCall)cParamsAssignment_3_1_1.eContents().get(0);
-		private final Keyword cRightParenthesisKeyword_4 = (Keyword)cGroup.eContents().get(4);
+		private final Assignment cFuncnameAssignment_0 = (Assignment)cGroup.eContents().get(0);
+		private final CrossReference cFuncnameFunctionCrossReference_0_0 = (CrossReference)cFuncnameAssignment_0.eContents().get(0);
+		private final RuleCall cFuncnameFunctionIDTerminalRuleCall_0_0_1 = (RuleCall)cFuncnameFunctionCrossReference_0_0.eContents().get(1);
+		private final Keyword cLeftParenthesisKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Group cGroup_2 = (Group)cGroup.eContents().get(2);
+		private final Assignment cParamsAssignment_2_0 = (Assignment)cGroup_2.eContents().get(0);
+		private final RuleCall cParamsExpressionParserRuleCall_2_0_0 = (RuleCall)cParamsAssignment_2_0.eContents().get(0);
+		private final Group cGroup_2_1 = (Group)cGroup_2.eContents().get(1);
+		private final Keyword cCommaKeyword_2_1_0 = (Keyword)cGroup_2_1.eContents().get(0);
+		private final Assignment cParamsAssignment_2_1_1 = (Assignment)cGroup_2_1.eContents().get(1);
+		private final RuleCall cParamsExpressionParserRuleCall_2_1_1_0 = (RuleCall)cParamsAssignment_2_1_1.eContents().get(0);
+		private final Keyword cRightParenthesisKeyword_3 = (Keyword)cGroup.eContents().get(3);
 		
 		//FunctionCall:
-		//	'func' funcname=[Function] '(' (params+=Expression (',' params+=Expression)*)? ')';
+		//	funcname=[Function] '(' (params+=Expression (',' params+=Expression)*)? ')';
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'func' funcname=[Function] '(' (params+=Expression (',' params+=Expression)*)? ')'
+		//funcname=[Function] '(' (params+=Expression (',' params+=Expression)*)? ')'
 		public Group getGroup() { return cGroup; }
 		
-		//'func'
-		public Keyword getFuncKeyword_0() { return cFuncKeyword_0; }
-		
 		//funcname=[Function]
-		public Assignment getFuncnameAssignment_1() { return cFuncnameAssignment_1; }
+		public Assignment getFuncnameAssignment_0() { return cFuncnameAssignment_0; }
 		
 		//[Function]
-		public CrossReference getFuncnameFunctionCrossReference_1_0() { return cFuncnameFunctionCrossReference_1_0; }
+		public CrossReference getFuncnameFunctionCrossReference_0_0() { return cFuncnameFunctionCrossReference_0_0; }
 		
 		//ID
-		public RuleCall getFuncnameFunctionIDTerminalRuleCall_1_0_1() { return cFuncnameFunctionIDTerminalRuleCall_1_0_1; }
+		public RuleCall getFuncnameFunctionIDTerminalRuleCall_0_0_1() { return cFuncnameFunctionIDTerminalRuleCall_0_0_1; }
 		
 		//'('
-		public Keyword getLeftParenthesisKeyword_2() { return cLeftParenthesisKeyword_2; }
+		public Keyword getLeftParenthesisKeyword_1() { return cLeftParenthesisKeyword_1; }
 		
 		//(params+=Expression (',' params+=Expression)*)?
-		public Group getGroup_3() { return cGroup_3; }
+		public Group getGroup_2() { return cGroup_2; }
 		
 		//params+=Expression
-		public Assignment getParamsAssignment_3_0() { return cParamsAssignment_3_0; }
+		public Assignment getParamsAssignment_2_0() { return cParamsAssignment_2_0; }
 		
 		//Expression
-		public RuleCall getParamsExpressionParserRuleCall_3_0_0() { return cParamsExpressionParserRuleCall_3_0_0; }
+		public RuleCall getParamsExpressionParserRuleCall_2_0_0() { return cParamsExpressionParserRuleCall_2_0_0; }
 		
 		//(',' params+=Expression)*
-		public Group getGroup_3_1() { return cGroup_3_1; }
+		public Group getGroup_2_1() { return cGroup_2_1; }
 		
 		//','
-		public Keyword getCommaKeyword_3_1_0() { return cCommaKeyword_3_1_0; }
+		public Keyword getCommaKeyword_2_1_0() { return cCommaKeyword_2_1_0; }
 		
 		//params+=Expression
-		public Assignment getParamsAssignment_3_1_1() { return cParamsAssignment_3_1_1; }
+		public Assignment getParamsAssignment_2_1_1() { return cParamsAssignment_2_1_1; }
 		
 		//Expression
-		public RuleCall getParamsExpressionParserRuleCall_3_1_1_0() { return cParamsExpressionParserRuleCall_3_1_1_0; }
+		public RuleCall getParamsExpressionParserRuleCall_2_1_1_0() { return cParamsExpressionParserRuleCall_2_1_1_0; }
 		
 		//')'
-		public Keyword getRightParenthesisKeyword_4() { return cRightParenthesisKeyword_4; }
+		public Keyword getRightParenthesisKeyword_3() { return cRightParenthesisKeyword_3; }
 	}
 	public class ExpressionElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.pkt.Tym.Expression");
@@ -1055,7 +1051,7 @@ public class TymGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//Function:
-	//	'<F' return=VariableType? name=ID '(' (params+=Variable (',' params+=Variable)*)? ')' body=FunctionBlock;
+	//	'func' return=VariableType? name=ID '(' (params+=Variable (',' params+=Variable)*)? ')' body=FunctionBlock;
 	public FunctionElements getFunctionAccess() {
 		return pFunction;
 	}
@@ -1065,7 +1061,7 @@ public class TymGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//VariableType:
-	//	'num' | 'word' | 'Bool';
+	//	'number' | 'word' | 'Bool';
 	public VariableTypeElements getVariableTypeAccess() {
 		return pVariableType;
 	}
@@ -1135,7 +1131,7 @@ public class TymGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//FunctionCall:
-	//	'func' funcname=[Function] '(' (params+=Expression (',' params+=Expression)*)? ')';
+	//	funcname=[Function] '(' (params+=Expression (',' params+=Expression)*)? ')';
 	public FunctionCallElements getFunctionCallAccess() {
 		return pFunctionCall;
 	}

@@ -1,0 +1,5 @@
+package org.xtext.kalbuteoria.projektas.typing
+
+class RefType implements MMKType {
+	override toString() { "reference" }
+}
